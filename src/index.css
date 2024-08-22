@@ -279,6 +279,7 @@ button {
     rgb(0, 0, 0, 0.05) 0 0.2rem 0.3rem,
     rgb(0, 0, 0, 0.05) 0 0.7rem 0.2rem,
     rgb(0, 0, 0, 0.05) 0 0.2rem 0.3rem;
+  margin-bottom: 20px;
 }
 
 .form-container input {
