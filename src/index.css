@@ -16,12 +16,15 @@
     sans-serif;
   color: #ececf1;
 }
-html, body { 
-  margin: 0; 
-  padding: 0; 
-  height: 100%; 
-  overflow: hidden; 
-} 
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
 ul {
   list-style-type: none;
 }
@@ -37,27 +40,42 @@ button {
   display: grid;
   grid-template-columns: 0fr 1fr;
   background-color: #282828;
-  position: relative; 
+  position: relative;
   overflow: hidden;
 
 }
+
 .hamburger {
-  position: fixed; /* Fixed position to keep it at the top */
-  top: 10px; /* Adjust as needed */
-  left: 10px; /* Adjust as needed */
-  cursor: pointer; /* Change cursor to pointer on hover */
-  z-index: 1000; /* Ensure it appears above other content */
-  display: none; /* Initially hidden */
+  position: fixed;
+  /* Fixed position to keep it at the top */
+  top: 10px;
+  /* Adjust as needed */
+  left: 10px;
+  /* Adjust as needed */
+  cursor: pointer;
+  /* Change cursor to pointer on hover */
+  z-index: 1000;
+  /* Ensure it appears above other content */
+  display: none;
+  /* Initially hidden */
 }
 
 @media (max-width: 900px) {
   .hamburger {
-    display: block; /* Show the hamburger icon on screens 850px or below */
+    display: block;
+    /* Show the hamburger icon on screens 850px or below */
+  }
+
+  .burger {
+    display: block;
+    /* Show the hamburger icon on screens 850px or below */
+
   }
 }
 
-.sidebar.open + .hamburger {
-  display: block; /* Hide the hamburger icon when the sidebar is open */
+.sidebar.open+.hamburger {
+  display: block;
+  /* Hide the hamburger icon when the sidebar is open */
 }
 
 .burger {
@@ -67,6 +85,9 @@ button {
   transform: translate(-25%, -50%);
   fill: #ececf1;
   cursor: pointer;
+  display: none;
+  /* Initially hidden */
+
 }
 
 .sidebar {
@@ -138,12 +159,10 @@ button {
   padding: 0 5px;
   left: calc(100% - 50px);
   border-radius: 0.3rem;
-  background: linear-gradient(
-    to right,
-    rgba(255, 252, 252, 0),
-    #202123 100%,
-    rgba(0, 0, 0, 0)
-  );
+  background: linear-gradient(to right,
+      rgba(255, 252, 252, 0),
+      #202123 100%,
+      rgba(0, 0, 0, 0));
   pointer-events: none;
   z-index: 1;
 }
@@ -265,8 +284,10 @@ button {
   margin: 0 auto;
   opacity: 0.6;
 }
+
 .form-container {
-  width: 50vw; /* Default width for medium-sized screens */
+  width: 50vw;
+  /* Default width for medium-sized screens */
   padding: 0.3rem 1.6rem;
   margin: 0 auto;
   border-radius: 15px;
@@ -279,7 +300,7 @@ button {
     rgb(0, 0, 0, 0.05) 0 0.2rem 0.3rem,
     rgb(0, 0, 0, 0.05) 0 0.7rem 0.2rem,
     rgb(0, 0, 0, 0.05) 0 0.2rem 0.3rem;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
 }
 
 .form-container input {
@@ -308,38 +329,41 @@ button {
 /* Larger screens */
 @media screen and (min-width: 1400px) {
   .form-container {
-    width: 40vw; /* Adjust for larger screens */
+    width: 40vw;
+    /* Adjust for larger screens */
   }
 }
 
 /* Medium screens */
 @media screen and (max-width: 1200px) and (min-width: 901px) {
   .form-container {
-    width: 50vw; /* Default for medium screens */
+    width: 50vw;
+    /* Default for medium screens */
   }
 }
 
 /* Smaller screens */
 @media screen and (max-width: 900px) {
   .form-container {
-    width: 70vw; /* Adjust for smaller screens */
+    width: 70vw;
+    /* Adjust for smaller screens */
   }
 }
 
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
   width: 10px;
   border-radius: 25px;
 }
 
-::-webkit-scrollbar-track{
+::-webkit-scrollbar-track {
   background: #dbdbe0;
   border-radius: 25px;
 
 }
 
-::-webkit-scrollbar-thumb{
-  background-image: linear-gradient(#708ab3,#a3a7d3);
+::-webkit-scrollbar-thumb {
+  background-image: linear-gradient(#708ab3, #a3a7d3);
   border-radius: 25px;
 }
 
@@ -352,6 +376,7 @@ button {
   text-align: center;
   padding: 20px;
 }
+
 .prompt-cards-container {
   display: flex;
   flex-wrap: wrap;
@@ -360,8 +385,10 @@ button {
 }
 
 .prompt-card {
-  background-color: #3a3e55; /* Dark background for the card */
-  color: #ececf1; /* Light text color */
+  background-color: #3a3e55;
+  /* Dark background for the card */
+  color: #ececf1;
+  /* Light text color */
   border-radius: 8px;
   padding: 1rem;
   width: 250px;
@@ -373,7 +400,8 @@ button {
 }
 
 .prompt-card:hover {
-  background-color: #4b4f6e; /* Slightly lighter background on hover */
+  background-color: #4b4f6e;
+  /* Slightly lighter background on hover */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
@@ -384,5 +412,6 @@ button {
 
 .prompt-card .prompt-description {
   font-size: 1rem;
-  color: #b0b0b6; /* Slightly lighter text color for description */
+  color: #b0b0b6;
+  /* Slightly lighter text color for description */
 }
