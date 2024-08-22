@@ -16,7 +16,12 @@
     sans-serif;
   color: #ececf1;
 }
-
+html, body { 
+  margin: 0; 
+  padding: 0; 
+  height: 100%; 
+  overflow: hidden; 
+} 
 ul {
   list-style-type: none;
 }
@@ -31,7 +36,28 @@ button {
   height: 100vh;
   display: grid;
   grid-template-columns: 0fr 1fr;
-  background-color: #343541;
+  background-color: #282828;
+  position: relative; 
+  overflow: hidden;
+
+}
+.hamburger {
+  position: fixed; /* Fixed position to keep it at the top */
+  top: 10px; /* Adjust as needed */
+  left: 10px; /* Adjust as needed */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  z-index: 1000; /* Ensure it appears above other content */
+  display: none; /* Initially hidden */
+}
+
+@media (max-width: 900px) {
+  .hamburger {
+    display: block; /* Show the hamburger icon on screens 850px or below */
+  }
+}
+
+.sidebar.open + .hamburger {
+  display: block; /* Hide the hamburger icon when the sidebar is open */
 }
 
 .burger {
@@ -239,12 +265,11 @@ button {
   margin: 0 auto;
   opacity: 0.6;
 }
-
 .form-container {
-  width: 50rem;
+  width: 50vw; /* Default width for medium-sized screens */
   padding: 0.3rem 1.6rem;
   margin: 0 auto;
-  border-radius: 0.3rem;
+  border-radius: 15px;
   display: flex;
   align-items: center;
   background-color: #404150;
@@ -279,22 +304,24 @@ button {
   fill: #ececf1;
 }
 
-@media screen and (min-width: 1280px) {
-  .main-header li {
-    margin: 1rem auto;
-    width: 50rem;
-  }
-}
-
-@media screen and (max-width: 1080px) {
+/* Larger screens */
+@media screen and (min-width: 1400px) {
   .form-container {
-    width: auto;
+    width: 40vw; /* Adjust for larger screens */
   }
 }
 
-@media screen and (max-width: 640px) {
-  .main-header li {
-    gap: 1rem;
+/* Medium screens */
+@media screen and (max-width: 1200px) and (min-width: 901px) {
+  .form-container {
+    width: 50vw; /* Default for medium screens */
+  }
+}
+
+/* Smaller screens */
+@media screen and (max-width: 900px) {
+  .form-container {
+    width: 70vw; /* Adjust for smaller screens */
   }
 }
 
@@ -319,3 +346,42 @@ button {
 /* ::-webkit-scrollbar-thumb:hover{
   background-image: linear-gradient(#708ab3,#383244);
 } */
+
+.empty-chat-container {
+  text-align: center;
+  padding: 20px;
+}
+.prompt-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.prompt-card {
+  background-color: #3a3e55; /* Dark background for the card */
+  color: #ececf1; /* Light text color */
+  border-radius: 8px;
+  padding: 1rem;
+  width: 250px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.prompt-card:hover {
+  background-color: #4b4f6e; /* Slightly lighter background on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.prompt-card .prompt-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.prompt-card .prompt-description {
+  font-size: 1rem;
+  color: #b0b0b6; /* Slightly lighter text color for description */
+}

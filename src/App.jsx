@@ -6,8 +6,16 @@ import {
   useLayoutEffect,
 } from 'react';
 import { BiPlus, BiUser, BiSend, BiSolidUserCircle } from 'react-icons/bi';
-import { MdOutlineArrowLeft, MdOutlineArrowRight } from 'react-icons/md';
+import { MdOutlineArrowLeft, MdOutlineArrowRight, MdMenu } from 'react-icons/md';
 import axios from 'axios';
+import PromptCard from './components/PromptCard.jsx';
+
+const prompts = [
+  { title: 'General Inquiry', description: 'Ask anything about our services.' },
+  { title: 'Technical Support', description: 'Get help with technical issues.' },
+  { title: 'Feedback', description: 'Provide feedback on our services.' },
+  // Add more prompts as needed
+];
 
 function App() {
   const [text, setText] = useState('');
@@ -36,21 +44,21 @@ function App() {
     setIsShowSidebar((prev) => !prev);
   }, []);
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
+  const submitHandler = async (e,prompt=null) => {
     console.log(text);
+    if(text != ""){
+      e.preventDefault();
+
+    }
     setMessage(text);
-    
-    return setErrorText('');
+    setErrorText('');
 
     if (!text) return;
 
     setIsResponseLoading(true);
-    setErrorText('');
 
-    
     try {
-      const response = await axios.post('http://127.0.0.1:5000/qaretrival', text, {
+      const response = await axios.post('http://127.0.0.1:5000/qaretrival', { text }, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -60,22 +68,16 @@ function App() {
         return setErrorText('Too many requests, please try again later.');
       }
 
-      const data = await response.data;
+      const data = response.data;
 
       if (data.error) {
         setErrorText(data.error.message);
         setText('');
       } else {
-        setErrorText(false);
-      }
-
-      if (!data.error) {
         setErrorText('');
         setMessage(data.choices[0].message);
         setTimeout(() => {
-          scrollToLastItem.current?.lastElementChild?.scrollIntoView({
-            behavior: 'smooth',
-          });
+          scrollToLastItem.current?.scrollIntoView({ behavior: 'smooth' });
         }, 1);
         setTimeout(() => {
           setText('');
@@ -115,7 +117,7 @@ function App() {
       setCurrentTitle(text);
     }
 
-    if (currentTitle && text && message) {
+    if (currentTitle && message) {
       const newChat = {
         title: currentTitle,
         role: 'user',
@@ -130,11 +132,14 @@ function App() {
 
       setPreviousChats((prevChats) => [...prevChats, newChat, responseMessage]);
       setLocalChats((prevChats) => [...prevChats, newChat, responseMessage]);
-      setText("");
+
       const updatedChats = [...localChats, newChat, responseMessage];
       localStorage.setItem('previousChats', JSON.stringify(updatedChats));
+
+      setText(''); // Clear the text input
+      setMessage(null); // Reset message to prevent re-triggering
     }
-  }, [message, currentTitle]);
+  }, [message, currentTitle, text]);
 
   const currentChat = (localChats || previousChats).filter(
     (prevChat) => prevChat.title === currentTitle
@@ -148,166 +153,149 @@ function App() {
     new Set(localChats.map((prevChat) => prevChat.title).reverse())
   ).filter((title) => !uniqueTitles.includes(title));
 
+  const handlePromptClick = (prompt) => {
+    console.log(prompt.description);
+    // setMessage({
+    //   role: 'Cure me',
+    //   content: prompt.description,
+    // });
+    // setErrorText('');
+  };
+
   return (
-    <>
-      <div className='container'>
-        <section className={`sidebar ${isShowSidebar ? 'open' : ''}`}>
-          <div className='sidebar-header' onClick={createNewChat} role='button'>
-            <BiPlus size={20} />
-            <button>New Chat</button>
-          </div>
-          <div className='sidebar-history'>
-            {uniqueTitles.length > 0 && previousChats.length !== 0 && (
-              <>
-                <p>Ongoing</p>
-                <ul>
-                  {uniqueTitles?.map((uniqueTitle, idx) => {
-                    const listItems = document.querySelectorAll('li');
-
-                    listItems.forEach((item) => {
-                      if (item.scrollWidth > item.clientWidth) {
-                        item.classList.add('li-overflow-shadow');
-                      }
-                    });
-
-                    return (
-                      <li
-                        key={idx}
-                        onClick={() => backToHistoryPrompt(uniqueTitle)}
-                      >
-                        {uniqueTitle}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </>
-            )}
-            {localUniqueTitles.length > 0 && localChats.length !== 0 && (
-              <>
-                <p>Previous</p>
-                <ul>
-                  {localUniqueTitles?.map((uniqueTitle, idx) => {
-                    const listItems = document.querySelectorAll('li');
-
-                    listItems.forEach((item) => {
-                      if (item.scrollWidth > item.clientWidth) {
-                        item.classList.add('li-overflow-shadow');
-                      }
-                    });
-
-                    return (
-                      <li
-                        key={idx}
-                        onClick={() => backToHistoryPrompt(uniqueTitle)}
-                      >
-                        {uniqueTitle}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </>
-            )}
-          </div>
-          <div className='sidebar-info'>
-            <div className='sidebar-info-upgrade'>
-              <BiUser size={20} />
-              <p>About</p>
-            </div>
-            <div className='sidebar-info-user'>
-              <BiSolidUserCircle size={20} />
-              <p>User</p>
-            </div>
-          </div>
-        </section>
-
-        <section className='main'>
-          {/* {!currentTitle && (
-            <div className='empty-chat-container'>
-              <img
-                src='images/chatgpt-logo.svg'
-                width={45}
-                height={45}
-                alt='ChatGPT'
-              />
-              <h1>Chat GPT Clone</h1>
-              <h3>How can I help you today?</h3>
-            </div>
-          )} */}
-
-          {isShowSidebar ? (
-            <MdOutlineArrowRight
-              className='burger'
-              size={28.8}
-              onClick={toggleSidebar}
-            />
-          ) : (
-            <MdOutlineArrowLeft
-              className='burger'
-              size={28.8}
-              onClick={toggleSidebar}
-            />
-          )}
-          <div className='main-header'>
-            <ul>
-              {currentChat?.map((chatMsg, idx) => {
-                const isUser = chatMsg.role === 'user';
-
-                return (
-                  <li key={idx} ref={scrollToLastItem}>
-                    {isUser ? (
-                      <div>
-                        <BiSolidUserCircle size={28.8} />
-                      </div>
-                    ) : (
-                      <img src='images/logo.png' alt='Cure Me' />
-                    )}
-                    {isUser ? (
-                      <div>
-                        <p className='role-title'>You</p>
-                        <p>{chatMsg.content}</p>
-                      </div>
-                    ) : (
-                      <div>
-                        <p className='role-title'>Cure Me</p>
-                        <p>{chatMsg.content}</p>
-                      </div>
-                    )}
+    <div className='container'>
+      <section className={`sidebar ${isShowSidebar ? 'open' : ''}`}>
+        <div className='sidebar-header' onClick={createNewChat} role='button'>
+          <BiPlus size={20} />
+          <button>New Chat</button>
+        </div>
+        <div className='sidebar-history'>
+          {uniqueTitles.length > 0 && previousChats.length !== 0 && (
+            <>
+              <p>Ongoing</p>
+              <ul>
+                {uniqueTitles?.map((uniqueTitle, idx) => (
+                  <li key={idx} onClick={() => backToHistoryPrompt(uniqueTitle)}>
+                    {uniqueTitle}
                   </li>
-                );
-              })}
-            </ul>
+                ))}
+              </ul>
+            </>
+          )}
+          {localUniqueTitles.length > 0 && localChats.length !== 0 && (
+            <>
+              <p>Previous</p>
+              <ul>
+                {localUniqueTitles?.map((uniqueTitle, idx) => (
+                  <li key={idx} onClick={() => backToHistoryPrompt(uniqueTitle)}>
+                    {uniqueTitle}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
+        <div className='sidebar-info'>
+          <div className='sidebar-info-upgrade'>
+            <BiUser size={20} />
+            <p>About</p>
           </div>
-          <div className='main-bottom'>
-            {errorText && <p className='errorText'>{errorText}</p>}
-            {errorText && (
-              <p id='errorTextHint'>
-                {/* *You can clone the repository and use your paid OpenAI API key
-                to make this work. */}
-              </p>
+          <div className='sidebar-info-user'>
+            <BiSolidUserCircle size={20} />
+            <p>User</p>
+          </div>
+        </div>
+      </section>
+
+      <section className='main'>
+        {!currentTitle && (
+          <div className='empty-chat-container'>
+            <img
+              src='images/logo.png'
+              width={45}
+              height={45}
+              alt='Cure Me'
+            />
+            <h1>Cure Me</h1>
+            <h3>How can I help you today?</h3>
+            <div className='prompt-cards-container'>
+              {prompts.map((prompt, index) => (
+                <PromptCard
+                  key={index}
+                  prompt={prompt}
+                  onClick={() => handlePromptClick(prompt)}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {isShowSidebar ? (
+          <MdMenu
+            className='hamburger'
+            size={28.8}
+            onClick={toggleSidebar}
+          />
+        ) : (
+          <MdOutlineArrowLeft
+            className='burger'
+            size={28.8}
+            onClick={toggleSidebar}
+          />
+        )}
+        <div className='main-header'>
+          <ul>
+            {currentChat?.map((chatMsg, idx) => {
+              const isUser = chatMsg.role === 'user';
+
+              return (
+                <li key={idx} ref={scrollToLastItem}>
+                  {isUser ? (
+                    <div>
+                      <BiSolidUserCircle size={28.8} />
+                    </div>
+                  ) : (
+                    <img src='images/logo.png' alt='Cure Me' />
+                  )}
+                  {isUser ? (
+                    <div>
+                      <p className='role-title'>You</p>
+                      <p>{chatMsg.content}</p>
+                    </div>
+                  ) : (
+                    <div>
+                      <p className='role-title'>Cure Me</p>
+                      <p>{chatMsg.content}</p>
+                    </div>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+        <div className='main-bottom'>
+          {errorText && <p className='errorText'>{errorText}</p>}
+          {errorText && (
+            <p id='errorTextHint'></p>
+          )}
+          <form className='form-container' onSubmit={submitHandler}>
+            <input
+              type='text'
+              placeholder='Send a message.'
+              spellCheck='false'
+              value={isResponseLoading ? 'Processing...' : text}
+              onChange={(e) => setText(e.target.value)}
+              readOnly={isResponseLoading}
+            />
+            {!isResponseLoading && (
+              <button type='submit'>
+                <BiSend size={20} />
+              </button>
             )}
-            <form className='form-container' onSubmit={submitHandler}>
-              <input
-                type='text'
-                placeholder='Send a message.'
-                spellCheck='false'
-                value={isResponseLoading ? 'Processing...' : text}
-                onChange={(e) => setText(e.target.value)}
-                readOnly={isResponseLoading}
-              />
-              {!isResponseLoading && (
-                <button type='submit'>
-                  <BiSend size={20} />
-                </button>
-              )}
-            </form>
-            {/* <p>
-              ChatGPT can make mistakes. Consider checking important
-              information.
-            </p> */}
-          </div>
-        </section>
-      </div>
-    </>
+          </form>
+        </div>
+      </section>
+    </div>
   );
 }
 
