@@ -7,6 +7,7 @@ import {
 } from 'react';
 import { BiPlus, BiUser, BiSend, BiSolidUserCircle } from 'react-icons/bi';
 import { MdOutlineArrowLeft, MdOutlineArrowRight } from 'react-icons/md';
+import axios from 'axios';
 
 function App() {
   const [text, setText] = useState('');
@@ -37,34 +38,29 @@ function App() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    return setErrorText('My billing plan is gone because of many requests.');
+    console.log(text);
+    setMessage(text);
+    
+    return setErrorText('');
+
     if (!text) return;
 
     setIsResponseLoading(true);
     setErrorText('');
 
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': import.meta.env.VITE_AUTH_TOKEN,
-      },
-      body: JSON.stringify({
-        message: text,
-      }),
-    };
-
+    
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/completions`,
-        options
-      );
+      const response = await axios.post('http://127.0.0.1:5000/qaretrival', text, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
       if (response.status === 429) {
         return setErrorText('Too many requests, please try again later.');
       }
 
-      const data = await response.json();
+      const data = await response.data;
 
       if (data.error) {
         setErrorText(data.error.message);
@@ -134,7 +130,7 @@ function App() {
 
       setPreviousChats((prevChats) => [...prevChats, newChat, responseMessage]);
       setLocalChats((prevChats) => [...prevChats, newChat, responseMessage]);
-
+      setText("");
       const updatedChats = [...localChats, newChat, responseMessage];
       localStorage.setItem('previousChats', JSON.stringify(updatedChats));
     }
@@ -215,7 +211,7 @@ function App() {
           <div className='sidebar-info'>
             <div className='sidebar-info-upgrade'>
               <BiUser size={20} />
-              <p>Upgrade plan</p>
+              <p>About</p>
             </div>
             <div className='sidebar-info-user'>
               <BiSolidUserCircle size={20} />
@@ -225,7 +221,7 @@ function App() {
         </section>
 
         <section className='main'>
-          {!currentTitle && (
+          {/* {!currentTitle && (
             <div className='empty-chat-container'>
               <img
                 src='images/chatgpt-logo.svg'
@@ -236,7 +232,7 @@ function App() {
               <h1>Chat GPT Clone</h1>
               <h3>How can I help you today?</h3>
             </div>
-          )}
+          )} */}
 
           {isShowSidebar ? (
             <MdOutlineArrowRight
@@ -263,7 +259,7 @@ function App() {
                         <BiSolidUserCircle size={28.8} />
                       </div>
                     ) : (
-                      <img src='images/chatgpt-logo.svg' alt='ChatGPT' />
+                      <img src='images/logo.png' alt='Cure Me' />
                     )}
                     {isUser ? (
                       <div>
@@ -272,7 +268,7 @@ function App() {
                       </div>
                     ) : (
                       <div>
-                        <p className='role-title'>ChatGPT</p>
+                        <p className='role-title'>Cure Me</p>
                         <p>{chatMsg.content}</p>
                       </div>
                     )}
@@ -285,8 +281,8 @@ function App() {
             {errorText && <p className='errorText'>{errorText}</p>}
             {errorText && (
               <p id='errorTextHint'>
-                *You can clone the repository and use your paid OpenAI API key
-                to make this work.
+                {/* *You can clone the repository and use your paid OpenAI API key
+                to make this work. */}
               </p>
             )}
             <form className='form-container' onSubmit={submitHandler}>
@@ -304,10 +300,10 @@ function App() {
                 </button>
               )}
             </form>
-            <p>
+            {/* <p>
               ChatGPT can make mistakes. Consider checking important
               information.
-            </p>
+            </p> */}
           </div>
         </section>
       </div>

@@ -114,7 +114,7 @@ button {
   border-radius: 0.3rem;
   background: linear-gradient(
     to right,
-    rgba(0, 0, 0, 0),
+    rgba(255, 252, 252, 0),
     #202123 100%,
     rgba(0, 0, 0, 0)
   );
@@ -177,7 +177,7 @@ button {
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  background-color: rgb(68, 70, 85);
+  background-color: rgb(255, 255, 255);
   padding: 1rem;
   margin: 1rem 0;
   border-radius: 0.3rem;
@@ -188,7 +188,7 @@ button {
 }
 
 .main-header li:nth-child(even) {
-  background-color: #444655;
+  background-color: #3a3e55;
 }
 
 .main-header img:not(:nth-child(even)) {
@@ -297,3 +297,25 @@ button {
     gap: 1rem;
   }
 }
+
+
+::-webkit-scrollbar{
+  width: 10px;
+  border-radius: 25px;
+}
+
+::-webkit-scrollbar-track{
+  background: #dbdbe0;
+  border-radius: 25px;
+
+}
+
+::-webkit-scrollbar-thumb{
+  background-image: linear-gradient(#708ab3,#a3a7d3);
+  border-radius: 25px;
+}
+
+
+/* ::-webkit-scrollbar-thumb:hover{
+  background-image: linear-gradient(#708ab3,#383244);
+} */
