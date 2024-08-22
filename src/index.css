@@ -59,7 +59,17 @@ button {
   display: none;
   /* Initially hidden */
 }
+.burger {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-25%, -50%);
+  fill: #ececf1;
+  cursor: pointer;
+  display: none;
+  /* Initially hidden */
 
+}
 @media (max-width: 900px) {
   .hamburger {
     display: block;
@@ -78,17 +88,7 @@ button {
   /* Hide the hamburger icon when the sidebar is open */
 }
 
-.burger {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translate(-25%, -50%);
-  fill: #ececf1;
-  cursor: pointer;
-  display: none;
-  /* Initially hidden */
 
-}
 
 .sidebar {
   width: 16rem;
