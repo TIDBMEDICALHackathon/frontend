@@ -90,9 +90,9 @@ function App() {
       e.preventDefault();
 
     }
-    // setMessage(text);
-    // setErrorText('');
-
+    setMessage(text);
+    setErrorText('');
+    // return;
     if (!text) return;
     let answer = answers[text.trim()];
     answer = formatApiResponse(answer)
@@ -111,7 +111,9 @@ function App() {
     } else {
 
       try {
-        const response = await axios.post('http://127.0.0.1:5000/qaretrival', { text }, {
+       
+
+        const response = await axios.post('http://127.0.0.1:5000/qaretrival', { question:text }, {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -140,7 +142,7 @@ function App() {
         setErrorText(e.message);
         console.error(e);
       } finally {
-        setIsResponseLoading(false);
+        // setIsResponseLoading(false);
       }
     }
     // setIsResponseLoading(true);

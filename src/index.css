@@ -17,13 +17,13 @@
   color: #ececf1;
 }
 
-html,
+/* html,
 body {
   margin: 0;
   padding: 0;
   height: 100%;
   overflow: hidden;
-}
+} */
 
 ul {
   list-style-type: none;
@@ -415,3 +415,4 @@ button {
   color: #b0b0b6;
   /* Slightly lighter text color for description */
 }
+
