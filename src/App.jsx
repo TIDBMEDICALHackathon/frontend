@@ -90,47 +90,49 @@ function App() {
       e.preventDefault();
 
     }
-    setMessage(text);
-    setErrorText('');
+
+
+    // setMessage(text);
+    // setErrorText('');
     // return;
     if (!text) return;
-    let answer = answers[text.trim()];
-    answer = formatApiResponse(answer)
-    if (answer) {
-      setMessage({
-        role: 'Cure Me',
-        content: answer,
-      });
-      setErrorText('');
-      setTimeout(() => {
-        scrollToLastItem.current?.scrollIntoView({ behavior: 'smooth' });
-      }, 1);
-      setTimeout(() => {
-        setText('');
-      }, 2);
-    } else {
+    // let answer = answers[text.trim()];
+    // answer = formatApiResponse(answer)
+    // if (answer) {
+    //   setMessage({
+    //     role: 'Cure Me',
+    //     content: answer,
+    //   });
+    //   setErrorText('');
+    //   setTimeout(() => {
+    //     scrollToLastItem.current?.scrollIntoView({ behavior: 'smooth' });
+    //   }, 1);
+    //   setTimeout(() => {
+    //     setText('');
+    //   }, 2);
+    // } else {
 
       try {
        
-
+        console.log("Text Is", text)
         const response = await axios.post('http://127.0.0.1:5000/qaretrival', { question:text }, {
           headers: {
             'Content-Type': 'application/json',
           },
         });
-
+       
         if (response.status === 429) {
           return setErrorText('Too many requests, please try again later.');
         }
 
         const data = response.data;
-
+        console.log(response.data.Message)
         if (data.error) {
           setErrorText(data.error.message);
           setText('');
         } else {
           setErrorText('');
-          setMessage(data.choices[0].message);
+          setMessage(response.data.Message);
           setTimeout(() => {
             scrollToLastItem.current?.scrollIntoView({ behavior: 'smooth' });
           }, 1);
@@ -144,7 +146,6 @@ function App() {
       } finally {
         // setIsResponseLoading(false);
       }
-    }
     // setIsResponseLoading(true);
 
   };
