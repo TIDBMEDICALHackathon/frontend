@@ -2,9 +2,7 @@
 
 The ChatGPT clone guides patients to cure their diseases.
 
-## Screenshots
 
-<img width="1430" alt="Cure Me" src="https://github.com/uigywnkiub/react-chatgpt-clone/assets/29861553/c3f8b227-5567-4f29-95ff-43ea82069c08">
 
 ## Installation
 
