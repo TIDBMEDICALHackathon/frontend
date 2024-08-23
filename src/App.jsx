@@ -126,13 +126,16 @@ function App() {
         }
 
         const data = response.data;
-        console.log(response.data.Message)
+        console.log(response)
         if (data.error) {
           setErrorText(data.error.message);
           setText('');
         } else {
           setErrorText('');
-          setMessage(response.data.Message);
+          setMessage({
+            role: 'Cure Me',
+            content: response.data.Message,
+          });
           setTimeout(() => {
             scrollToLastItem.current?.scrollIntoView({ behavior: 'smooth' });
           }, 1);
